@@ -55,20 +55,57 @@ namespace DrBlackService1
             /// <returns></returns>
             public static int fgenerate()
             {
-                if (File.Exists("C:\\Windows\\Temp\\api.html"))
-                    File.Delete("C:\\Windows\\Temp\\api.html");
-                Syscmd.ExecutePwsh("wget -Uri \"https://api.drblack-system.com/bili3/\" -o C:\\Windows\\Temp\\api.html", 1000);
-                string[] api = File.ReadAllLines("C:\\Windows\\Temp\\api.html");
-                string[] cmp = { "", "元旦", "除夕", "春节", "元宵", "清明", "端午", "劳动", "中秋", "国庆", "圣诞", "立春", "立夏", "立秋", "立冬" };
-                int i;
-                for (i = 1; i < 15; i++)
+                DateTime dt = DateTime.Now;
+                Lunar.LunarDate ld = new Lunar.LunarDate();
+                ld = Lunar.GetLunarDate(dt.Year, dt.Month, dt.Day);
+                if ((dt.Month == 1) && (dt.Day == 1))
+                    return 1;
+                else if ((ld.Month == 12) && (ld.Day == 30))
+                    return 2;
+                else if ((ld.Month == 12) && (ld.Day == 29))
                 {
-                    if (api[10].Contains(cmp[i]))
-                        break;
+                    Lunar.LunarDate lunarDate = new Lunar.LunarDate();
+                    DateTime dateTime = DateTime.Now.AddDays(1);
+                    lunarDate = Lunar.GetLunarDate(dateTime.Year, dateTime.Month, dateTime.Day);
+                    if (lunarDate.Month == 1)
+                        return 2;
                 }
-                if (i == 15)
-                    i = 0;
-                return i;
+                else if ((ld.Month == 1) && (ld.Day == 1))
+                    return 3;
+                else if ((ld.Month == 1) && (ld.Day == 15))
+                    return 4;
+                else if ((ld.Month == 5) && (ld.Day == 5))
+                    return 6;
+                else if ((dt.Month == 5) && (dt.Day == 1))
+                    return 7;
+                else if ((ld.Month == 8) && (ld.Day == 15))
+                    return 8;
+                else if ((dt.Month == 10) && (dt.Day == 1))
+                    return 9;
+                else if ((dt.Month == 12) && (dt.Day == 25))
+                    return 10;
+                else
+                {
+                    SolarTerm.SolarDate[] sd = new SolarTerm.SolarDate[5];
+                    sd[0] = SolarTerm.GetSolarTermDate(SolarTerm.SolarTerms.Beginning_Of_Spring, dt.Year);
+                    sd[1] = SolarTerm.GetSolarTermDate(SolarTerm.SolarTerms.Beginning_Of_Summer, dt.Year);
+                    sd[2] = SolarTerm.GetSolarTermDate(SolarTerm.SolarTerms.Beginning_Of_Autumn, dt.Year);
+                    sd[3] = SolarTerm.GetSolarTermDate(SolarTerm.SolarTerms.Beginning_Of_Winter, dt.Year);
+                    sd[4] = SolarTerm.GetSolarTermDate(SolarTerm.SolarTerms.QingMing, dt.Year);
+                    if ((sd[0].Month == dt.Month) && (sd[0].Day == dt.Day))
+                        return 11;
+                    else if ((sd[1].Month == dt.Month) && (sd[1].Day == dt.Day))
+                        return 12;
+                    else if ((sd[2].Month == dt.Month) && (sd[2].Day == dt.Day))
+                        return 13;
+                    else if ((sd[3].Month == dt.Month) && (sd[3].Day == dt.Day))
+                        return 14;
+                    else if ((sd[4].Month == dt.Month) && (sd[4].Day == dt.Day))
+                        return 5;
+                    else
+                        return 0;
+                }
+                return 0;
             }
             /// <summary>
             /// 天气API获取生成
