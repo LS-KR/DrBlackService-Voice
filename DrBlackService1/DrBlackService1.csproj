@@ -52,6 +52,7 @@
     <Compile Include="Enum.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Lunar.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

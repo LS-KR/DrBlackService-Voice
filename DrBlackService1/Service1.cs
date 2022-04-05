@@ -162,7 +162,7 @@ namespace DrBlackService1
         }
         private static string ServRequst(string RequestString, string token, string body)
         {
-            string url = "";//这里因为涉及敏感数据,已被删除
+            string url = "https://art.drblack-system.com/wp-json/b2/v1/checkFollowing";
             string ret = null;
             Encoding encoding = Encoding.UTF8;
             HttpWebResponse response;

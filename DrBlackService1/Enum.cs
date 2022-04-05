@@ -167,7 +167,13 @@ namespace DrBlackService1
                 string weauri = "http://www.weather.com.cn/weather1d/" + ret + ".shtml";
                 Syscmd.ExecutePwsh("wget " + weauri + " -o C:\\Windows\\Temp\\wapi.html", 1000);
                 string[] awp = File.ReadAllLines("C:\\Windows\\Temp\\wapi.html");
-                string wapi = awp[717];
+                int target;
+                for (target = 0; target < awp.Length; target++)
+                {
+                    if (awp[target].Contains("hour3data"))
+                        break;
+                }
+                string wapi = awp[target];
                 Console.WriteLine(wapi);
                 string[] vs = wapi.Split('\"');
                 int sn, cl, rn, th;
